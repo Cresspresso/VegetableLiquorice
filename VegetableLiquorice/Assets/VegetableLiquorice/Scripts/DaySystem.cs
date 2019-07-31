@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+// Singleton class that is persistent between scenes.
 public class DaySystem : MonoBehaviour
 {
-	public int numDays = 7;
-	public int currentDay = 0;
+	public BarManager bars;
 
 
 
@@ -59,19 +59,32 @@ public class DaySystem : MonoBehaviour
 	private void Start()
 	{
 		Debug.Log("Created DaySystem.instance singleton.");
+		ResetGame();
 	}
 	
 	public void ResetGame()
 	{
 		Debug.Log("Game has been restarted.");
-		currentDay = 0;
+
+		bars.dayBar.value = 0;
+		bars.weightBar.value = 5;
+
 		SceneManager.LoadScene("Elijah");
 	}
-
+	
 	public void NextDay()
 	{
-		currentDay = Mathf.Clamp(currentDay + 1, 0, numDays);
-		if (currentDay == numDays)
+		bool wasLastDay = bars.dayBar.value == bars.dayBar.maxValue;
+
+		if (!wasLastDay)
+		{
+			bars.dayBar.value += 1;
+			Debug.Log("Day is now Day Index " + bars.dayBar.value);
+		}
+		
+		bars.weightBar.value -= 2;
+
+		if (wasLastDay)
 		{
 			StartCoroutine(EndGame());
 		}
