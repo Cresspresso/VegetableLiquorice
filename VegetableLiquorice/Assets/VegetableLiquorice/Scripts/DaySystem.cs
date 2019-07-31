@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DaySystem : MonoBehaviour
 {
@@ -57,6 +58,29 @@ public class DaySystem : MonoBehaviour
 
 	private void Start()
 	{
-		Debug.Log("Wow");
+		Debug.Log("Created DaySystem.instance singleton.");
+	}
+	
+	public void ResetGame()
+	{
+		Debug.Log("Game has been restarted.");
+		currentDay = 0;
+		SceneManager.LoadScene("Elijah");
+	}
+
+	public void NextDay()
+	{
+		currentDay = Mathf.Clamp(currentDay + 1, 0, numDays);
+		if (currentDay == numDays)
+		{
+			StartCoroutine(EndGame());
+		}
+	}
+
+	private IEnumerator EndGame()
+	{
+		Debug.Log("Game has ended."); // TODO
+		yield return new WaitForEndOfFrame();
+		SceneManager.LoadScene("ElijahEndScene");
 	}
 }
