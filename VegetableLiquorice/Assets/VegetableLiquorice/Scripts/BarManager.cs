@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+[System.Obsolete()]
 public class BarManager : MonoBehaviour
 {
-	public Slider dayBar;
-	public Slider weightBar;
 }

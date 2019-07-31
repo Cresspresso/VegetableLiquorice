@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class HealthyFood : MonoBehaviour
 {
+	public int cost = 1;
+	public int weight = 1;
+
 	public void Eat()
 	{
-		DaySystem.instance.bars.weightBar.value += 1;
+		var sys = DaySystem.instance;
+		if (sys.Money >= cost)
+		{
+			sys.Money -= cost;
+			sys.Weight += weight;
+		}
+		else
+		{
+			Debug.LogWarning("Not enough money to eat.");
+		}
 	}
 }
