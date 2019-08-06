@@ -6,6 +6,7 @@ public class HealthyFood : MonoBehaviour
 {
 	public int cost = 1;
 	public int weight = 1;
+    public int fullness = 1;
 
 	public void Eat()
 	{
@@ -14,6 +15,7 @@ public class HealthyFood : MonoBehaviour
 		{
 			sys.Money -= cost;
 			sys.Weight += weight;
+            sys.Fullness += fullness;
 		}
 		else
 		{

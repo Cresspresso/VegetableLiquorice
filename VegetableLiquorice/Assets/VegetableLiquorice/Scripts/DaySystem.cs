@@ -12,15 +12,19 @@ public class DaySystem : MonoBehaviour
 	public Slider dayBar;
 	public Slider moneyBar;
 	public Slider weightBar;
+    public Slider fullnessBar;
 
 	public EndGamePanel endGamePanel;
 
 	public int minFinalWeight = 5;
 	public int maxFinalWeight = 15;
+    public int weightLossPerDay = 2;
 
-	public int weightLossPerDay = 2;
+    public int minFinalFullness = 5;
+    public int maxFinalFullness = 15;
+    public int fullnessLossPerDay = 5;
 
-	public float Weight
+    public float Weight
 	{
 		get { return weightBar.value; }
 		set
@@ -58,12 +62,29 @@ public class DaySystem : MonoBehaviour
 		{
 			dayBar.value = value;
 		}
-	}
+    }
+    public float Fullness
+    {
+        get { return fullnessBar.value; }
+        set
+        {
+            fullnessBar.value = value;
+            float clamped = fullnessBar.value;
+            if (clamped == fullnessBar.minValue)
+            {
+                EndGame(EndGameOutcome.Starving);
+            }
+            else if (clamped == weightBar.maxValue)
+            {
+                EndGame(EndGameOutcome.Overfull);
+            }
+        }
+    }
 
 
 
-	#region Singleton
-	private static DaySystem _instance;
+    #region Singleton
+    private static DaySystem _instance;
 	public static DaySystem instance
 	{
 		get
@@ -119,11 +140,10 @@ public class DaySystem : MonoBehaviour
 		endGamePanel.Hide();
 
 		dayBar.value = 0;
-		weightBar.value = weightBar.maxValue / 2;
 		moneyBar.value = moneyBar.maxValue;
-
-		SceneManager.LoadScene("Elijah");
-	}
+        weightBar.value = weightBar.maxValue / 2;
+        fullnessBar.value = fullnessBar.maxValue / 2;
+    }
 	
 	public void NextDay()
 	{
@@ -138,6 +158,7 @@ public class DaySystem : MonoBehaviour
 		}
 		
 		Weight -= weightLossPerDay;
+        Fullness -= fullnessLossPerDay;
 
 		if (wasLastDay)
 		{
@@ -146,15 +167,23 @@ public class DaySystem : MonoBehaviour
 	}
 
 	public EndGameOutcome CheckStatsForOutcome()
-	{
-		if (weightBar.value < minFinalWeight)
+    {
+		if (Weight > maxFinalWeight)
+        {
+            return EndGameOutcome.Overweight;
+        }
+        else if (Weight < minFinalWeight)
 		{
 			return EndGameOutcome.Underweight;
 		}
-		else if (weightBar.value > maxFinalWeight)
-		{
-			return EndGameOutcome.Overweight;
-		}
+        else if (Fullness > maxFinalFullness)
+        {
+            return EndGameOutcome.Overfull;
+        }
+        else if (Fullness < minFinalFullness)
+        {
+            return EndGameOutcome.Starving;
+        }
 		else
 		{
 			return EndGameOutcome.Perfect;

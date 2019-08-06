@@ -7,6 +7,8 @@ public enum EndGameOutcome
 	Perfect,
 	Overweight,
 	Underweight,
+    Overfull,
+    Starving,
 }
 
 public class EndGamePanel : MonoBehaviour
@@ -14,8 +16,10 @@ public class EndGamePanel : MonoBehaviour
 	public GameObject perfect;
 	public GameObject overweight;
 	public GameObject underweight;
+    public GameObject overfull;
+    public GameObject starving;
 
-	public void Show(EndGameOutcome outcome)
+    public void Show(EndGameOutcome outcome)
 	{
 		switch (outcome)
 		{
@@ -34,7 +38,17 @@ public class EndGamePanel : MonoBehaviour
 					underweight.SetActive(true);
 				}
 				break;
-		}
+            case EndGameOutcome.Overfull:
+                {
+                    overfull.SetActive(true);
+                }
+                break;
+            case EndGameOutcome.Starving:
+                {
+                    starving.SetActive(true);
+                }
+                break;
+        }
 		gameObject.SetActive(true);
 	}
 
@@ -45,5 +59,7 @@ public class EndGamePanel : MonoBehaviour
 		perfect.SetActive(false);
 		overweight.SetActive(false);
 		underweight.SetActive(false);
-	}
+        overfull.SetActive(false);
+        starving.SetActive(false);
+    }
 }
