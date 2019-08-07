@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class GameSystem : MonoBehaviour
 {
+    private bool debugMode = false;
+
     [HideInInspector]
     public int day;
     [HideInInspector]
@@ -139,8 +141,6 @@ public class GameSystem : MonoBehaviour
                 coinStackOrigin));
         }
 
-        anim = Anim.Idle;
-
         RestartGame();
     }
 
@@ -151,6 +151,8 @@ public class GameSystem : MonoBehaviour
         money = 7;
         weight = 8;
         happiness = 3;
+
+        anim = Anim.Idle;
 
         restartButton.interactable = false;
 
@@ -417,11 +419,24 @@ public class GameSystem : MonoBehaviour
         }
     }
 
-#if UNITY_EDITOR
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            debugMode = !debugMode;
+        }
+    }
+    
     private void OnGUI()
     {
-        GUI.Label(new Rect(10, 10, 100, 100),
-            string.Format("day = {0}\nhours = {1}\nmoney = {2}\nweight = {3}\nhappiness = {4}", day, time, money, weight, happiness));
+        if (debugMode)
+        {
+            GUI.Label(
+                new Rect(10, 10, 100, 100),
+                string.Format(
+                    "day = {0}\nhours = {1}\nmoney = {2}\nweight = {3}\nhappiness = {4}",
+                    day, time, money, weight, happiness
+                ));
+        }
     }
-#endif
 }
