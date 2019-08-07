@@ -299,6 +299,7 @@ GameObject:
   m_Component:
   - component: {fileID: 727214838}
   - component: {fileID: 727214837}
+  - component: {fileID: 727214839}
   m_Layer: 5
   m_Name: ScreenFade
   m_TagString: Untagged
@@ -344,6 +345,18 @@ RectTransform:
   m_AnchoredPosition: {x: 303.5, y: 170.5}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &727214839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 727214836}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 464fe06ee552aec4aa82d2275190f196, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 727214837}
 --- !u!1 &815172067
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,8 +435,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 815172072}
-        m_MethodName: SwitchCam
-        m_Mode: 1
+        m_MethodName: FadeToLevel
+        m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -476,13 +489,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 815172067}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6ee899ea4abe74f46b6c875fd25ac329, type: 3}
+  m_Script: {fileID: 11500000, guid: 464fe06ee552aec4aa82d2275190f196, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FstCamera: {fileID: 1892300303}
-  SndCamera: {fileID: 356713817}
-  TrdCamera: {fileID: 1918500557}
-  CurrCam: 2
+  animator: {fileID: 727214837}
 --- !u!1 &827060285
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,7 +934,7 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1868402949}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
