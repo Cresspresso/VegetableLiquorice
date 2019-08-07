@@ -21,7 +21,17 @@ public class GameSystem : MonoBehaviour
     public Button unhealthyButton;
     public Button playWithKidButton;
     public Button restartButton;
+    public Image clockFill;
+    public Image calendarFill;
+    public Transform coinPrefab;
+    public Transform coinStackOrigin;
+    public float coinHeight = 0.2f;
+    public float coinAltOffset = 0.05f;
 
+    [SerializeField]
+    [HideInInspector]
+    private List<Transform> coins;
+     
     public GameObject cameraTable;
     public GameObject cameraFridge;
 
@@ -59,6 +69,7 @@ public class GameSystem : MonoBehaviour
     }
 
     public const int dayEnd = 8;
+    public const int timeMax = 12;
     public const int weightLow = 0;
     public const int weightHigh = 15;
     public const int happinessLow = 0;
@@ -78,13 +89,27 @@ public class GameSystem : MonoBehaviour
         playWithKidButton.onClick.AddListener(PlayWithKid);
         restartButton.onClick.AddListener(RestartGame);
 
+        for (int i = 0; i < 30; i++)
+        {
+            var v = Vector3.up * i * coinHeight;
+            if (i % 2 == 0)
+            {
+                v += Vector3.right * coinAltOffset;
+            }
+            coins.Add(Instantiate(
+                coinPrefab,
+                coinStackOrigin.TransformPoint(v),
+                coinStackOrigin.rotation,
+                coinStackOrigin));
+        }
+
         RestartGame();
     }
 
     public void RestartGame()
     {
         day = 1;
-        time = 12;
+        time = timeMax;
         money = 7;
         weight = 8;
         happiness = 3;
@@ -113,7 +138,7 @@ public class GameSystem : MonoBehaviour
             weight -= 1;
             happiness -= Mathf.FloorToInt((float)time / 2);
 
-            time = 12;
+            time = timeMax;
 
             UpdateUI();
 
@@ -219,6 +244,14 @@ public class GameSystem : MonoBehaviour
         unhealthyButton.image.color = money >= unhealthyMoney && time >= unhealthyTime ? Color.white : Color.red;
         playWithKidButton.image.color = time >= playTime ? Color.white : Color.red;
         nextDayButton.image.color = day < dayEnd ? Color.white : Color.red;
+
+        clockFill.fillAmount = (float)time / timeMax;
+        calendarFill.fillAmount = (float)day / (dayEnd - 1);
+
+        for (int i = 0; i < coins.Count; ++i)
+        {
+            coins[i].gameObject.SetActive(i < money);
+        }
     }
 
     private void OnGUI()
