@@ -73,18 +73,49 @@ public class GameSystem : MonoBehaviour
     public List<GameObject> happyBalloons;
     public List<GameObject> sadBalloons;
 
+
+    public GameObject kidSkinnyIdle;
+    public GameObject kidNormalIdle;
+    public GameObject kidFatIdle;
+
+    public GameObject kidSkinnyEating;
+    public GameObject kidNormalEating;
+    public GameObject kidFatEating;
+
+    public GameObject kidSkinnyPlaying;
+    public GameObject kidNormalPlaying;
+    public GameObject kidFatPlaying;
+
+    public enum Anim
+    {
+        Idle,
+        Eating,
+        Playing,
+    }
+    [HideInInspector]
+    public Anim anim;
+
+
+
     public const int dayEnd = 8;
     public const int timeMax = 12;
-    public const int weightLow = 0;
-    public const int weightHigh = 15;
-    public const int happinessLow = 0;
+
+    public const int weightInstantLoseLow = 0;
+    public const int weightInstantLoseHigh = 15;
+    public const int weightWinLow = 5;
+    public const int weightWinHigh = 10;
+
+    public const int happinessInstantLoseLow = 0;
     public const int happinessMax = 5;
+    public const int happinessWinLow = 3;
 
     public const int healthyMoney = 1;
     public const int healthyTime = 2;
     public const int unhealthyMoney = 1;
     public const int unhealthyTime = 1;
     public const int playTime = 2;
+
+
 
     private void Start()
     {
@@ -107,6 +138,8 @@ public class GameSystem : MonoBehaviour
                 coinStackOrigin.rotation,
                 coinStackOrigin));
         }
+
+        anim = Anim.Idle;
 
         RestartGame();
     }
@@ -145,11 +178,13 @@ public class GameSystem : MonoBehaviour
 
             time = timeMax;
 
+            anim = Anim.Idle;
+
             UpdateUI();
 
             if (day >= dayEnd
-                || weight <= weightLow
-                || happiness <= happinessLow)
+                || weight <= weightInstantLoseLow
+                || happiness <= happinessInstantLoseLow)
             {
                 EndGame();
             }
@@ -168,9 +203,11 @@ public class GameSystem : MonoBehaviour
             time -= healthyTime;
             weight += 2;
 
+            anim = Anim.Eating;
+
             UpdateUI();
 
-            if (weight >= weightHigh)
+            if (weight >= weightInstantLoseHigh)
             {
                 EndGame();
             }
@@ -191,9 +228,11 @@ public class GameSystem : MonoBehaviour
             happiness += 1;
             if (happiness > happinessMax) { happiness = happinessMax; }
 
+            anim = Anim.Eating;
+
             UpdateUI();
 
-            if (weight >= weightHigh)
+            if (weight >= weightInstantLoseHigh)
             {
                 EndGame();
             }
@@ -212,6 +251,8 @@ public class GameSystem : MonoBehaviour
             happiness += 1;
             if (happiness > happinessMax) { happiness = happinessMax; }
 
+            anim = Anim.Playing;
+
             UpdateUI();
         }
         else
@@ -225,15 +266,15 @@ public class GameSystem : MonoBehaviour
         restartButton.interactable = true;
 
         cameraCurrent = cameraFridge;
-        if (happiness < 3)
+        if (happiness < happinessWinLow)
         {
             drawingCurrent = drawingSad;
         }
-        else if (weight < 5)
+        else if (weight < weightWinLow)
         {
             drawingCurrent = drawingStarving;
         }
-        else if (weight > 10)
+        else if (weight > weightWinHigh)
         {
             drawingCurrent = drawingOverweight;
         }
@@ -266,11 +307,121 @@ public class GameSystem : MonoBehaviour
         {
             sadBalloons[i].SetActive(i >= happiness);
         }
+
+
+
+        bool isLow = weight < weightWinLow;
+        bool isHigh = weight > weightWinHigh;
+        switch (anim)
+        {
+            case Anim.Eating:
+
+                kidSkinnyIdle.SetActive(false);
+                kidNormalIdle.SetActive(false);
+                kidFatIdle.SetActive(false);
+
+                kidSkinnyPlaying.SetActive(false);
+                kidNormalPlaying.SetActive(false);
+                kidFatPlaying.SetActive(false);
+
+                if (isLow)
+                {
+                    kidNormalEating.SetActive(false);
+                    kidFatEating.SetActive(false);
+
+                    kidSkinnyEating.SetActive(true);
+                }
+                else if (isHigh)
+                {
+                    kidSkinnyEating.SetActive(false);
+                    kidNormalEating.SetActive(false);
+
+                    kidFatEating.SetActive(true);
+                }
+                else
+                {
+                    kidSkinnyEating.SetActive(false);
+                    kidFatEating.SetActive(false);
+
+                    kidNormalEating.SetActive(true);
+                }
+
+                break;
+            case Anim.Playing:
+
+                kidSkinnyIdle.SetActive(false);
+                kidNormalIdle.SetActive(false);
+                kidFatIdle.SetActive(false);
+
+                kidSkinnyEating.SetActive(false);
+                kidNormalEating.SetActive(false);
+                kidFatEating.SetActive(false);
+
+                if (isLow)
+                {
+                    kidNormalPlaying.SetActive(false);
+                    kidFatPlaying.SetActive(false);
+
+                    kidSkinnyPlaying.SetActive(true);
+                }
+                else if (isHigh)
+                {
+                    kidSkinnyPlaying.SetActive(false);
+                    kidNormalPlaying.SetActive(false);
+
+                    kidFatPlaying.SetActive(true);
+                }
+                else
+                {
+                    kidSkinnyPlaying.SetActive(false);
+                    kidFatPlaying.SetActive(false);
+
+                    kidNormalPlaying.SetActive(true);
+                }
+
+                break;
+            case Anim.Idle:
+            default:
+
+                kidSkinnyEating.SetActive(false);
+                kidNormalEating.SetActive(false);
+                kidFatEating.SetActive(false);
+
+                kidSkinnyPlaying.SetActive(false);
+                kidNormalPlaying.SetActive(false);
+                kidFatPlaying.SetActive(false);
+
+                if (isLow)
+                {
+                    kidNormalIdle.SetActive(false);
+                    kidFatIdle.SetActive(false);
+
+                    kidSkinnyIdle.SetActive(true);
+                }
+                else if (isHigh)
+                {
+                    kidSkinnyIdle.SetActive(false);
+                    kidNormalIdle.SetActive(false);
+
+                    kidFatIdle.SetActive(true);
+                }
+                else
+                {
+                    kidSkinnyIdle.SetActive(false);
+                    kidFatIdle.SetActive(false);
+
+                    kidNormalIdle.SetActive(true);
+                }
+
+                break;
+        }
     }
 
+#if UNITY_EDITOR
     private void OnGUI()
     {
         GUI.Label(new Rect(10, 10, 100, 100),
             string.Format("day = {0}\nhours = {1}\nmoney = {2}\nweight = {3}\nhappiness = {4}", day, time, money, weight, happiness));
     }
+#endif
 }
