@@ -11,11 +11,11 @@ public class HealthyFood : MonoBehaviour
 	public void Eat()
 	{
 		var sys = DaySystem.instance;
-		if (sys.Money >= cost)
+		if (sys.moneyBar.value >= cost)
 		{
-			sys.Money -= cost;
-			sys.Weight += weight;
-            sys.Fullness += fullness;
+			sys.moneyBar.value -= cost;
+			sys.weightBar.value += weight;
+            sys.fullnessBar.value += fullness;
 		}
 		else
 		{
