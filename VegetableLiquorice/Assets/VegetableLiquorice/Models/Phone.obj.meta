@@ -11,7 +11,12 @@ ModelImporter:
     2300000: Phone
     3300000: Phone
     4300000: Phone
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PhoneMat
+    second: {fileID: 2100000, guid: 6be526c47362e23459d15baba44c45fb, type: 2}
   materials:
     importMaterials: 1
     materialName: 0

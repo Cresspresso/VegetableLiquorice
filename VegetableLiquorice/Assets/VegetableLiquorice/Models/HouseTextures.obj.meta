@@ -12,7 +12,12 @@ ModelImporter:
     2300000: g_FullHouse_FullHouse_1001
     3300000: g_FullHouse_FullHouse_1001
     4300000: g_FullHouse_FullHouse_1001
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: g_FullHouse_FullHouse_1001Mat
+    second: {fileID: 2100000, guid: 200b44e09526d5548b55383abddf5229, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
