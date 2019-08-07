@@ -21,16 +21,6 @@ public class GameSystem : MonoBehaviour
     public Button unhealthyButton;
     public Button playWithKidButton;
     public Button restartButton;
-    public Image clockFill;
-    public Image calendarFill;
-    public Transform coinPrefab;
-    public Transform coinStackOrigin;
-    public float coinHeight = 0.2f;
-    public float coinAltOffset = 0.05f;
-
-    [SerializeField]
-    [HideInInspector]
-    private List<Transform> coins;
      
     public GameObject cameraTable;
     public GameObject cameraFridge;
@@ -67,6 +57,21 @@ public class GameSystem : MonoBehaviour
             if (drawingCurrent_) { drawingCurrent_.SetActive(true); }
         }
     }
+
+    public Image clockFill;
+    public Image calendarFill;
+
+    public Transform coinPrefab;
+    public Transform coinStackOrigin;
+    public float coinHeight = 0.2f;
+    public float coinAltOffset = 0.05f;
+
+    [SerializeField]
+    [HideInInspector]
+    private List<Transform> coins;
+
+    public List<GameObject> happyBalloons;
+    public List<GameObject> sadBalloons;
 
     public const int dayEnd = 8;
     public const int timeMax = 12;
@@ -251,6 +256,15 @@ public class GameSystem : MonoBehaviour
         for (int i = 0; i < coins.Count; ++i)
         {
             coins[i].gameObject.SetActive(i < money);
+        }
+
+        for (int i = 0; i < happyBalloons.Count; ++i)
+        {
+            happyBalloons[i].SetActive(i < happiness);
+        }
+        for (int i = 0; i < sadBalloons.Count; ++i)
+        {
+            sadBalloons[i].SetActive(i >= happiness);
         }
     }
 
