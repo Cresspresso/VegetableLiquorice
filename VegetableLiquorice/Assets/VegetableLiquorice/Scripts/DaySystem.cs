@@ -9,77 +9,12 @@ using UnityEngine.SceneManagement;
 // Singleton class that is persistent between scenes.
 public class DaySystem : MonoBehaviour
 {
-	public Slider dayBar;
-	public Slider moneyBar;
-	public Slider weightBar;
-    public Slider fullnessBar;
+	public StatBar dayBar;
+	public StatBar moneyBar;
+	public StatBar weightBar;
+    public StatBar fullnessBar;
 
 	public EndGamePanel endGamePanel;
-
-	public int minFinalWeight = 5;
-	public int maxFinalWeight = 15;
-    public int weightLossPerDay = 2;
-
-    public int minFinalFullness = 5;
-    public int maxFinalFullness = 15;
-    public int fullnessLossPerDay = 5;
-
-    public float Weight
-	{
-		get { return weightBar.value; }
-		set
-		{
-			weightBar.value = value;
-			float clamped = weightBar.value;
-			if (clamped == weightBar.minValue)
-			{
-				EndGame(EndGameOutcome.Underweight);
-			}
-			else if (clamped == weightBar.maxValue)
-			{
-				EndGame(EndGameOutcome.Overweight);
-			}
-		}
-	}
-
-	public float Money
-	{
-		get { return moneyBar.value; }
-		set
-		{
-			if (value < -0.001f)
-			{
-				throw new InvalidOperationException("Money must be >= 0");
-			}
-			moneyBar.value = value;
-		}
-	}
-
-	public float DayIndex
-	{
-		get { return dayBar.value; }
-		set
-		{
-			dayBar.value = value;
-		}
-    }
-    public float Fullness
-    {
-        get { return fullnessBar.value; }
-        set
-        {
-            fullnessBar.value = value;
-            float clamped = fullnessBar.value;
-            if (clamped == fullnessBar.minValue)
-            {
-                EndGame(EndGameOutcome.Starving);
-            }
-            else if (clamped == weightBar.maxValue)
-            {
-                EndGame(EndGameOutcome.Overfull);
-            }
-        }
-    }
 
 
 
@@ -156,9 +91,21 @@ public class DaySystem : MonoBehaviour
 
 			Debug.Log("Day is now Day Index " + dayBar.value);
 		}
-		
-		Weight -= weightLossPerDay;
-        Fullness -= fullnessLossPerDay;
+
+        var a = weightBar.OnEndDay();
+        var b = fullnessBar.OnEndDay();
+        switch (a)
+        {
+            case Ordering.Equal: break;
+            case Ordering.Less: EndGame(EndGameOutcome.Underweight); break;
+            case Ordering.Greater: EndGame(EndGameOutcome.Overweight); break;
+        }
+        switch (b)
+        {
+            case Ordering.Equal: break;
+            case Ordering.Less: EndGame(EndGameOutcome.Starving); break;
+            case Ordering.Greater: EndGame(EndGameOutcome.Overfull); break;
+        }
 
 		if (wasLastDay)
 		{
@@ -168,26 +115,20 @@ public class DaySystem : MonoBehaviour
 
 	public EndGameOutcome CheckStatsForOutcome()
     {
-		if (Weight > maxFinalWeight)
+		switch (weightBar.WinOrdering)
         {
-            return EndGameOutcome.Overweight;
+            case Ordering.Equal: break;
+            case Ordering.Less: return EndGameOutcome.Underweight;
+            case Ordering.Greater: return EndGameOutcome.Overweight;
         }
-        else if (Weight < minFinalWeight)
-		{
-			return EndGameOutcome.Underweight;
-		}
-        else if (Fullness > maxFinalFullness)
+        switch (fullnessBar.WinOrdering)
         {
-            return EndGameOutcome.Overfull;
+            case Ordering.Equal: break;
+            case Ordering.Less: return EndGameOutcome.Starving;
+            case Ordering.Greater: return EndGameOutcome.Overfull;
         }
-        else if (Fullness < minFinalFullness)
-        {
-            return EndGameOutcome.Starving;
-        }
-		else
-		{
-			return EndGameOutcome.Perfect;
-		}
+
+        return EndGameOutcome.Perfect;
 	}
 
 	public void EndGame(EndGameOutcome outcome)

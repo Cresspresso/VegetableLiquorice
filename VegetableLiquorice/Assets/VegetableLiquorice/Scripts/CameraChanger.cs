@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class CameraChanger : MonoBehaviour
 {
@@ -31,11 +32,14 @@ public class CameraChanger : MonoBehaviour
 
     public void ApplyActive()
     {
-        for (int i = 0; i < viewpoints.Length; i++)
+        foreach (var v in viewpoints.Where(v => v != null))
         {
-            var v = viewpoints[i];
-            if (v == null) { continue; }
-            v.SetActive(i == current);
+            v.SetActive(false);
+        }
+
+        if (current >= 0 && current < viewpoints.Length)
+        {
+            viewpoints[current].SetActive(true);
         }
     }
 

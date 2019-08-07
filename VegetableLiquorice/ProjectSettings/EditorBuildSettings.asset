@@ -6,24 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/corey.unity
-    guid: 007d554a3ad6edc498770d436ae78923
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/VegetableLiquoriceScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/C_Main.unity
-    guid: e65f41e551437c44fa0e386278e8bfe5
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/C_Work.unity
-    guid: 907200b0199d2874b9bf7360de41cdef
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/Elijah.unity
-    guid: ba188653701e8b34b8566a87eed74c50
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/ElijahScene2.unity
-    guid: 30b2763dbad97214dbbac83d01960b33
-  - enabled: 1
-    path: Assets/VegetableLiquorice/Scenes/ElijahEndScene.unity
-    guid: 51320d40138c36948b78c2968891bcd8
+    path: Assets/VegetableLiquorice/Scenes/ElijahHouse.unity
+    guid: 246193b85766a6c4385df68189735830
   m_configObjects: {}
