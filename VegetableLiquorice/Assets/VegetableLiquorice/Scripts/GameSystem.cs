@@ -432,7 +432,7 @@ public class GameSystem : MonoBehaviour
         if (debugMode)
         {
             GUI.Label(
-                new Rect(10, 10, 100, 100),
+                new Rect(10, Screen.height / 10, 100, 100),
                 string.Format(
                     "day = {0}\nhours = {1}\nmoney = {2}\nweight = {3}\nhappiness = {4}",
                     day, time, money, weight, happiness
